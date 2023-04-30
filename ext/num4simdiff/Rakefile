@@ -1,0 +1,5 @@
+require 'ffi-compiler/compile_task'
+
+FFI::Compiler::CompileTask.new('num4simdiff') do |c|
+  c.have_header?('CNum4SimDiff.h', '.')
+end
