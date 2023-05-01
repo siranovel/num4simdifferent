@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
       'homepage_uri'      => s.homepage,
   }
   s.license     = "MIT"
-  s.files       = ["LICENSE", "Gemfile", "CHANGELOG.md", “.yardopts”]
+  s.files       = ["LICENSE", "Gemfile", "CHANGELOG.md", ".yardopts"]
   s.files       += Dir.glob("{lib,ext}/**/*")
   s.extensions  = %w[ext/num4simdiff/Rakefile]
   s.add_dependency 'ffi-compiler', '~> 1.0', '>= 1.0.1'
