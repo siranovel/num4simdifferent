@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'num4simdiff'
-  s.version     = '0.0.3'
+  s.version     = '0.1.1'
   s.date        = '2023-05-01'
   s.summary     = "num for simultaneous different"
   s.description = "numerical solution for simultaneous ordinaray differential equations"
@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
       'documentation_uri' => "https://rubydoc.info/gems/#{s.name}/#{s.version}",
       'homepage_uri'      => s.homepage,
   }
+  s.rdoc_options = ["--no-private"]
   s.license     = "MIT"
   s.files       = ["LICENSE", "Gemfile", "CHANGELOG.md", ".yardopts"]
   s.files       += Dir.glob("{lib,ext}/**/*")
