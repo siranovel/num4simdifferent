@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'num4simdiff'
-  s.version     = '0.1.1'
-  s.date        = '2023-05-02'
+  s.version     = '0.2.1'
+  s.date        = '2023-05-08'
   s.summary     = "num for simultaneous different"
   s.description = "numerical solution for simultaneous ordinaray differential equations"
   s.authors     = ["siranovel"]
@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
       'changelog_uri'     => s.homepage + '/blob/main/CHANGELOG.md',
       'documentation_uri' => "https://rubydoc.info/gems/#{s.name}/#{s.version}",
       'homepage_uri'      => s.homepage,
+      'wiki_uri'          => 'https://github.com/siranovel/mydocs/tree/main/num4simdiff',
   }
   s.rdoc_options = ["--no-private"]
   s.license     = "MIT"
