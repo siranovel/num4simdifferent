@@ -4,6 +4,9 @@ num4simdiffrent
 
 ## decscription ##
 
+詳細は、https://siranovel.github.io/mydocs/num4simdifferent
+
+
 ## Demo ##
 
 ## VS. ##

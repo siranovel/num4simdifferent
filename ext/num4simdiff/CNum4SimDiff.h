@@ -5,14 +5,12 @@
 /* 構造体宣言                          */
 /**************************************/
 typedef struct _CNum4SimDiff CNum4SimDiff;
-typedef double* (*Func)(int n, double* yi);
 
 struct _CNum4SimDiff
 {
-    double* (*FP_dmy)(int n, double *yi, double h, Func func);
-    double* (*FP_eulerMethod)(int n, double *yi, double h, Func func);
-    double* (*FP_heunMethod)(int n, double *yi, double h, Func func);
-    double* (*FP_rungeKuttaMethod)(int n, double *yi, double h, Func func);
+    double* (*FP_eulerMethod)(int n, double *yi, double h, double *f);
+    double* (*FP_heunMethod)(int n, double *yi, double h, double *f);
+    double* (*FP_rungeKuttaMethod)(int n, double *yi, double h, double *f);
 };
 /**************************************/
 /* define宣言                         */
@@ -20,8 +18,7 @@ struct _CNum4SimDiff
 /**************************************/
 /* プロトタイプ宣言                    */
 /**************************************/
-double* CNum4SimDiff_dmy(int n, double *yi, double h, Func func);
-double* CNum4SimDiff_eulerMethod(int n, double *yi, double h, Func func);
-double* CNum4SimDiff_heunMethod(int n, double *yi, double h, Func func);
-double* CNum4SimDiff_rungeKuttaMethod(int n, double *yi, double h, Func func);
+double* CNum4SimDiff_eulerMethod(int n, double *yi, double h, double *f);
+double* CNum4SimDiff_heunMethod(int n, double *yi, double h, double *f);
+double* CNum4SimDiff_rungeKuttaMethod(int n, double *yi, double h, double *f);
 #endif

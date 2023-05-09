@@ -6,31 +6,13 @@ module Num4SimDiffLib
     extend FFI::Library
 
     ffi_lib FFI::Compiler::Loader.find('num4simdiff')
-
-    # @overload f(n, yn)
-    #   dy = f(n, yn)
-    #   @yield [n, yn] dy = f(n, yn)
-    #   @yieldparam [int] n ynの個数
-    #   @yieldparam [pointer] yn FFI::Pointer
-    #   @return [pointer] xiに対するyの値(FFI::Pointer)
-    callback   :f, [:int, :pointer], :pointer
-
-    attach_function :dmyFFI,
-        :CNum4SimDiff_dmy, [:int, :buffer_in, :double, :f], :pointer
     attach_function :eulerMethodFFI,
-        :CNum4SimDiff_eulerMethod, [:int, :buffer_in, :double, :f], :pointer
+        :CNum4SimDiff_eulerMethod, [:int, :buffer_in, :double, :buffer_in], :pointer
     attach_function :heunMethodFFI,
-        :CNum4SimDiff_heunMethod, [:int, :buffer_in, :double,  :f], :pointer
+        :CNum4SimDiff_heunMethod, [:int, :buffer_in, :double,  :buffer_in], :pointer
     attach_function :rungeKuttaMethodFFI,
-        :CNum4SimDiff_rungeKuttaMethod, [:int, :buffer_in, :double, :f], :pointer
+        :CNum4SimDiff_rungeKuttaMethod, [:int, :buffer_in, :double, :buffer_in], :pointer
     class << self
-        # @private
-        def dmy(yi, h, func)
-          n = yi.size
-          yi_ptr = cnvRbAry2pt(n, yi)
-          yi_1_ptr = dmyFFI(n, yi_ptr, h, func)
-          yi_1 = cnvPt2RbAry(n, yi_1_ptr)
-        end
         #
         # オイラー法による数値計算
         # @overload eulerMethod(yi, h, func)
@@ -39,12 +21,24 @@ module Num4SimDiffLib
         #   @param [double] h  刻み幅
         #   @param [callback] func xiに対する傾きを計算する関数
         #   @return [double[]] xi+hに対するyi_1の値(配列)
+        # @example
+        #   func = Proc.new do | n, yi |
+        #     f = []
+        #     f[0] = yi[0]
+        #     f[1] = yi[1]
+        #     next f
+        #   end
+        #   yi = [1.0, 1.0] 
+        #   yi_1 =  Num4SimDiffLib.eulerMethod(yi, 0.001, func)
         #
         def eulerMethod(yi, h, func)
           n = yi.size
+          f = func.call(n, yi)
+          f_ptr = cnvRbAry2pt(n, f)
           yi_ptr = cnvRbAry2pt(n, yi)
-          yi_1_ptr = eulerMethodFFI(n, yi_ptr, h, func)
+          yi_1_ptr = eulerMethodFFI(n, yi_ptr, h, f_ptr)
           yi_1 = cnvPt2RbAry(n, yi_1_ptr)
+          f_ptr.free()
           return yi_1
         end
         #
@@ -55,12 +49,24 @@ module Num4SimDiffLib
         #   @param [double] h  刻み幅
         #   @param [callback] func xiに対する傾きを計算する関数
         #   @return [double[]] xi+hに対するyi_1の値(配列)
+        # @example
+        #   func = Proc.new do | n, yi |
+        #     f = []
+        #     f[0] = yi[0]
+        #     f[1] = yi[1]
+        #     next f
+        #   end
+        #   yi = [1.0, 1.0] 
+        #   yi_1 =  Num4SimDiffLib.heunMethod(yi, 0.001, func)
         #
         def heunMethod(yi, h, func)
           n = yi.size
+          f = func.call(n, yi)
+          f_ptr = cnvRbAry2pt(n, f)
           yi_ptr = cnvRbAry2pt(n, yi)
-          yi_1_ptr = heunMethodFFI(n, yi_ptr, h, func)
+          yi_1_ptr = heunMethodFFI(n, yi_ptr, h, f_ptr)
           yi_1 = cnvPt2RbAry(n, yi_1_ptr)
+          f_ptr.free()
           return yi_1
         end
         #
@@ -71,21 +77,29 @@ module Num4SimDiffLib
         #   @param [double] h  刻み幅
         #   @param [callback] func xiに対する傾きを計算する関数
         #   @return [double[]] xi+hに対するyi_1の値(配列)
+        # @example
+        #   func = Proc.new do | n, yi |
+        #     f = []
+        #     f[0] = yi[0]
+        #     f[1] = yi[1]
+        #     next f
+        #   end
+        #   yi = [1.0, 1.0] 
+        #   yi_1 =  Num4SimDiffLib.rungeKuttaMethod(yi, 0.001, func)
         #
         def rungeKuttaMethod(yi, h, func)
           n = yi.size
+          f = func.call(n, yi)
+          f_ptr = cnvRbAry2pt(n, f)
           yi_ptr = cnvRbAry2pt(n, yi)
-          yi_1_ptr = rungeKuttaMethodFFI(n, yi_ptr, h, func)
+          yi_1_ptr = rungeKuttaMethodFFI(n, yi_ptr, h, f_ptr)
           yi_1 = cnvPt2RbAry(n, yi_1_ptr)
+          f_ptr.free()
           return yi_1
         end
 
         #
-        # ruby配列からFFI::Pointer型に変換
-        # @overload  cnvRbAry2pt(n, ary)
-        # @param [int] n 配列の個数
-        # @param [double[]] ary yiの値(配列)
-        # @return [pointer] FFI::Pointer
+        # @private
         def cnvRbAry2pt(n, ary)
             yi_ptr = FFI::MemoryPointer.new(:double, n)
             n.times.map { |i|
@@ -94,17 +108,15 @@ module Num4SimDiffLib
             return yi_ptr   
         end
         #
-        # FFI::Pointer型からruby配列に変換
-        # @overload  cnvPt2RbAry(n, pt)
-        # @param [int] n 配列の個数
-        # @param [pointer] pt FFI::Pointer
-        # @return [double[]] yiの値(配列)
+        # @private
         def cnvPt2RbAry(n, pt)
           rbAry = n.times.map { |i|
              pt.get_double(i * Fiddle::SIZEOF_DOUBLE)
           }
           return rbAry  
         end
+        private :cnvRbAry2pt
+        private :cnvPt2RbAry
         private :eulerMethodFFI
         private :heunMethodFFI
         private :rungeKuttaMethodFFI

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [0.2.1] - 2023-05-08
+
+### Fixed
+- change cnvRbAry2pt to private
+- change cnvPt2RbAry to private
+
 ## [0.1.1] - 2023-05-02
 
 ### Fixed
