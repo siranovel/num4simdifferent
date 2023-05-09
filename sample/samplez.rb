@@ -6,26 +6,17 @@ class Num4SimDiffTest
         @h = 0.001
         @y0 = [1.0, 1.0] 
         @e = Math.exp(@a)
-        @funcDmy = Proc.new do | n, yi_ptr |
+        @func = Proc.new do | n, yi |
           f = []
-          yi = Num4SimDiffLib.cnvPt2RbAry(n, yi_ptr)
           f[0] = yi[0]
           f[1] = yi[1]
-          next Num4SimDiffLib.cnvRbAry2pt(n, f)
-        end
-        @func = Proc.new do | n, yi_ptr |
-          f = []
-          yi = Num4SimDiffLib.cnvPt2RbAry(n, yi_ptr)
-          f[0] = yi[0]
-          f[1] = yi[1]
-          next Num4SimDiffLib.cnvRbAry2pt(n, f)
+          next f
         end
     end
     def dmyTest
-        yi = @y0
-        yi_1 = Num4SimDiffLib.dmy(yi, @h, @funcDmy)
-        print yi_1[0]
-        puts 
+        yi_1 =  Num4SimDiffLib.eulerMethod([1.0, 1.0] , 0.001, @func)
+        print yi_1[0], ",", yi_1[1]      # yi_1[0] = 2.719640856168132
+        puts
     end
     #
     # オイラー法のテスト
@@ -70,7 +61,6 @@ class Num4SimDiffTest
         puts
     end
 end
-# 1.0
 # exp(1.0):2.718281828459045 1.0:2.719640856168132,2.719640856168132
 # exp(1.0):2.718281828459045 1.0:2.7210010162682026,2.7210010162682026
 # exp(1.0):2.718281828459045 1.0:2.7210014698815583,2.7210014698815583
