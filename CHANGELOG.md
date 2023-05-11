@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## [0.2.2] - 2023-05-11
+
+### Changed
+- chg wiki-uri
+
 ## [0.2.1] - 2023-05-08
 
 ### Fixed
