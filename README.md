@@ -1,5 +1,5 @@
-num4simdiffrent
-===============
+num4simdifferent
+================
 数値計算による連立常微分方程式を解くFFI
 
 ## decscription ##
@@ -27,8 +27,8 @@ From rubygems:
 
 or from the git repository on github:  
 ~~~
-    git clone https://github.com/siranovel/num4simdiffrent.git  
-    cd num4simdiffrent  
+    git clone https://github.com/siranovel/num4simdifferent.git  
+    cd num4simdifferent  
     jruby -S gem build *.gemspec
     jruby -S gem install num4simdiff
 ~~~
