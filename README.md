@@ -1,11 +1,10 @@
 num4simdifferent
-================
+===============
 数値計算による連立常微分方程式を解くFFI
 
 ## decscription ##
 
-詳細は、https://siranovel.github.io/mydocs/num4simdifferent
-
+詳細は、https://siranovel.github.io/mydocs/num4simdifferent  
 
 ## Demo ##
 
@@ -16,7 +15,7 @@ ruby FFI-compilerライブラリ
 
 ## Usage ##
 
-sample/samplez.rbを参照
+sample/spec内の各ファイル参照
 
 ## install ##
 
@@ -28,7 +27,7 @@ From rubygems:
 or from the git repository on github:  
 ~~~
     git clone https://github.com/siranovel/num4simdifferent.git  
-    cd num4simdifferent  
+    cd num4simdiffrent  
     jruby -S gem build *.gemspec
     jruby -S gem install num4simdiff
 ~~~
